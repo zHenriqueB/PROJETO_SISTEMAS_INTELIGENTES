@@ -1,13 +1,63 @@
-Version: 1.0
+#Projeto em Sistemas inteligentes
 
-RestoreWorkspace: Default
-SaveWorkspace: Default
-AlwaysSaveHistory: Default
+#Carregar os pacotes que utilizados no projeto
+ 
+ if(!require(pacman)) install.packages("pacman")
+ library(pacman)
+ 
+ pacman::p_load(dplyr, ggplot2, car, rstatix, lmtest, ggpmisc)
+ 
+ 
+ Banco.de.Dados.11 <- read.csv2("C:/Users/Walter/Downloads/Banco de Dados 11.csv")
+   View(Banco.de.Dados.11)
+ # Verifica dos pressupostos para a regressão linear
+ 
+ dados =  Banco.de.Dados.11
+ View(dados)                                 # Visualização dos dados em janela separada
+ glimpse(dados)                              # Visualização de um resumo dos dados
+                                                                                                                                                                                   
+ ## Relação linear entre a VD e a VI:
+ ### VD: Vendas
+ ### VI: Publicidade
+ 
+ plot(dados$Publicidade, dados$Vendas)
+ 
+ # Verificação dos pressupostos para a regressão linear
+ 
+ 
+ ## Relação linear entre a VD e a VI:
+ ### VD: Vendas
+ ### VI: Publicidade
+ 
+ plot(dados$Publicidade, dados$Vendas)
+ ## Construção do modelo:
+ mod <- lm(Vendas ~ Publicidade, dados)
+ ## Análise grafica:
+ 
+ par(mfrow=c(2,2))
+ 
+plot(mod)
 
-EnableCodeIndexing: Yes
-UseSpacesForTab: Yes
-NumSpacesForTab: 2
-Encoding: UTF-8
 
-RnwWeave: Sweave
-LaTeX: pdfLaTeX
+par(mfrow=c(1,1))
+ ## Normalidade dos resíduos:
+ shapiro.test(mod$residuals)
+ 
+ ## Outliers nos resíduos:
+ summary(rstandard(mod))
+ ## Independencia dos resíduos (Durbin-Watson):
+ durbinWatsonTest(mod)
+ ## Homocedasticidade (Breusch-Pagan):
+ bptest(mod)
+ 
+ # Análise do modelo
+ summary(mod)
+
+ ggplot(data = dados, mapping = aes(x = Publicidade, y = Vendas)) +
++     geom_point() +
++     geom_smooth(method = "lm", col = "red") +
++     stat_poly_eq(aes(label = paste(after_stat(eq.label), after_stat(..adj.rr.label..),
++                                    sep = "*plain(\",\")~~")),
++                  label.x = 0.05, label.y = 400,
++                  parse = TRUE, coef.digits = 5) +
++     theme_classic()
