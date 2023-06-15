@@ -53,11 +53,11 @@ par(mfrow=c(1,1))
  # Análise do modelo
  summary(mod)
 
- ggplot(data = dados, mapping = aes(x = Publicidade, y = Vendas)) +
-+     geom_point() +
-+     geom_smooth(method = "lm", col = "red") +
-+     stat_poly_eq(aes(label = paste(after_stat(eq.label), after_stat(..adj.rr.label..),
-+                                    sep = "*plain(\",\")~~")),
-+                  label.x = 0.05, label.y = 400,
-+                  parse = TRUE, coef.digits = 5) +
-+     theme_classic()
+ggplot(data = dados, mapping = aes(x = Publicidade, y = Vendas)) +
+  geom_point() +
+  geom_smooth(method = "lm", col = "red") +
+  stat_poly_eq(aes(label = paste(after_stat(eq.label), after_stat(..adj.rr.label..),
+                                sep = "*plain(\",\")~~")),
+               label.x = 0.05, label.y = 400,
+               parse = TRUE, coef.digits = 5) +
+  theme_classic()
